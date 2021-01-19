@@ -13,7 +13,7 @@ class MobileTest < Test::Unit::TestCase
 		caps["realMobile"] = true
 
 		caps['project'] = "BrowserStack"
-		caps['build'] = "Demo"
+		caps['build'] = ENV['build_name']
 		caps['name'] = "Parallel Test: " + caps['device']
 
 		caps["browserstack.debug"] = "true"

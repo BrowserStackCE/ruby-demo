@@ -20,7 +20,7 @@ class ParallelTest < Test::Unit::TestCase
 		end
 
 		caps['project'] = "BrowserStack"
-		caps['build'] = "Demo"
+		caps['build'] = ENV['build_name']
 		caps['name'] = "Parallel Test: " + browser_name
 
 		caps["browserstack.debug"] = "true"
