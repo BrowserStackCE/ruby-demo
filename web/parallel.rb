@@ -7,26 +7,31 @@ require 'rest-client'
 class ParallelTest < Test::Unit::TestCase
 
   def setup
-  	caps = Selenium::WebDriver::Remote::Capabilities.new
-		caps["browser"] = ENV['browser']
-		caps["browser_version"] = ENV['browser_version']
-		caps["os"] = ENV['os']
-		caps["os_version"] = ENV['os_version']
 
-		if ENV['browser'] != "Internet Explorer"
-			browser_name = "#{ENV['browser'].capitalize} #{ENV['browser_version']}"
-		else
-			browser_name = "Internet Explorer #{ENV['browser_version']}"
-		end
+    if ENV['browser'] != "Internet Explorer"
+      browser_name = "#{ENV['browser'].capitalize} #{ENV['browser_version']}"
+    else
+      browser_name = "Internet Explorer #{ENV['browser_version']}"
+    end
 
-		caps['project'] = "BrowserStack"
-		caps['build'] = "Demo"
-		caps['name'] = "Parallel Test: " + browser_name
-
-		caps["browserstack.debug"] = "true"
+    caps = Selenium::WebDriver::Remote::Capabilities.new(
+      'bstack:options': {
+        "os" => ENV['os'],
+        "osVersion" => ENV['os_version'],
+        "projectName" => "BrowserStack",
+        "buildName" => ENV['build_name'],
+        "sessionName" => "Parallel Test: " + browser_name,
+        "local" => "false",
+        "debug"=> "true",
+        "seleniumCdp"=> true,
+        "seleniumVersion" => "4.1.2"
+      },
+      browser_name: ENV['browser'],
+      browserVersion: ENV['browser_version']
+    )
 
     url = "http://#{ENV["BROWSERSTACK_USER"]}:#{ENV["BROWSERSTACK_ACCESSKEY"]}@hub-cloud.browserstack.com/wd/hub"
-    @driver = Selenium::WebDriver.for(:remote, :url => url, :desired_capabilities => caps)
+    @driver = Selenium::WebDriver.for(:remote, :url => url, :capabilities => caps)
   end
 
   def test_post
@@ -40,5 +45,5 @@ class ParallelTest < Test::Unit::TestCase
   	RestClient.put api_url, {"status"=>"passed"}, {:content_type => :json}
     @driver.quit
   end
-  
+
 end

@@ -7,20 +7,24 @@ require 'rest-client'
 class FailTest < Test::Unit::TestCase
 
   def setup
-    caps = Selenium::WebDriver::Remote::Capabilities.new
-		caps['browser'] = 'IE'
-		caps['browser_version'] = '11.0'
-		caps['os'] = 'Windows'
-		caps['os_version'] = '10'
-
-		caps['project'] = "BrowserStack"
-		caps['build'] = "Demo"
-		caps['name'] = "Failed Test"
-
-		caps["browserstack.debug"] = "true"
+    caps = Selenium::WebDriver::Remote::Capabilities.new(
+      'bstack:options': {
+        "os" => "Windows",
+        "osVersion" => "10",
+        "projectName" => "BrowserStack",
+        "buildName" => "Demo Example",
+        "sessionName" => "Failed test",
+        "local" => "false",
+        "debug"=> "true",
+        "seleniumCdp"=> true,
+        "seleniumVersion" => "4.1.2"
+      },
+      browser_name: 'IE',
+      browserVersion: '11.0'
+    )
 
     url = "http://#{ENV["BROWSERSTACK_USER"]}:#{ENV["BROWSERSTACK_ACCESSKEY"]}@hub-cloud.browserstack.com/wd/hub"
-    @driver = Selenium::WebDriver.for(:remote, :url => url, :desired_capabilities => caps)
+    @driver = Selenium::WebDriver.for(:remote, :url => url, :capabilities => caps)
 
   end
 
