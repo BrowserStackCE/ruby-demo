@@ -7,20 +7,23 @@ require 'rest-client'
 class MobileTest < Test::Unit::TestCase
 
   def setup
-  	caps = Selenium::WebDriver::Remote::Capabilities.new
-		caps["device"] = ENV['device']
-		caps["os_version"] = ENV['os_version'] if ENV['os_version']
-		caps["realMobile"] = true
 
-		caps['project'] = "BrowserStack"
-		caps['build'] = ENV['build_name']
-		caps['name'] = "Parallel Test: " + caps['device']
-
-		caps["browserstack.debug"] = "true"
+    caps = Selenium::WebDriver::Remote::Capabilities.new(
+      'bstack:options': {
+        "deviceName" => ENV['device'],
+        "projectName" => "BrowserStack",
+        "buildName" => ENV['build_name'],
+        "sessionName" => "Parallel Test: " + ENV['device'],
+        "local" => "false",
+        "debug"=> "true",
+        "seleniumCdp"=> true,
+        "seleniumVersion" => "4.1.2"
+      }
+    )
 
     url = "http://#{ENV["BROWSERSTACK_USER"]}:#{ENV["BROWSERSTACK_ACCESSKEY"]}@hub-cloud.browserstack.com/wd/hub"
-    @driver = Selenium::WebDriver.for(:remote, :url => url, :desired_capabilities => caps)
-    
+    @driver = Selenium::WebDriver.for(:remote, :url => url, :capabilities => caps)
+
   end
 
   def test_post
@@ -34,5 +37,5 @@ class MobileTest < Test::Unit::TestCase
     RestClient.put api_url, {"status"=>"passed"}, {:content_type => :json}
     @driver.quit
   end
-  
+
 end
