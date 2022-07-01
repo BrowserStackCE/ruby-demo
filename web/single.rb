@@ -8,7 +8,6 @@ class SingleTest < Test::Unit::TestCase
 
   def setup
 
-	url = "http://#{ENV["BROWSERSTACK_USER"]}:#{ENV["BROWSERSTACK_ACCESSKEY"]}@hub-cloud.browserstack.com/wd/hub"
   caps = Selenium::WebDriver::Remote::Capabilities.new(
     'bstack:options': {
       "os" => "Windows",
@@ -24,7 +23,8 @@ class SingleTest < Test::Unit::TestCase
     browser_name: 'chrome',
     browserVersion: 'latest'
   )
-
+  
+  url = "https://#{ENV["BROWSERSTACK_USER"]}:#{ENV["BROWSERSTACK_ACCESSKEY"]}@hub-cloud.browserstack.com/wd/hub"
 	@driver = Selenium::WebDriver.for(:remote, :url => url, :capabilities => caps)
 
   end
