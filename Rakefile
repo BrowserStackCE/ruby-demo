@@ -14,6 +14,11 @@
 			system "ruby web/single.rb"
 		end
 
+# Automate - Single Test
+		task :selenium4 do
+			system "ruby web/selenium4.rb"
+		end
+
 
 
 # Automate - Parallel Tests
@@ -26,7 +31,7 @@
 			command =  "os=\"#{browser['os']}\" "
 			command += "os_version=\"#{browser['os_version']}\" "
 			command += "browser=\"#{browser['browser']}\" "
-			command += "browser_version=\"#{browser['browser_version']}\" "	
+			command += "browser_version=\"#{browser['browser_version']}\" "
 			command += "build_name=\"#{build_name}\" "
 			command += "ruby web/parallel.rb"
 			system command
@@ -88,7 +93,7 @@
 				puts "No previous apps found. Uploading app..."
 				puts RestClient.post(
 					"https://#{ENV["BROWSERSTACK_USER"]}:#{ENV["BROWSERSTACK_ACCESSKEY"]}@api.browserstack.com/app-automate/upload",
-					{ 
+					{
 						file: File.new("./app/apps/WikipediaSample.apk", 'rb'),
 						data: {"custom_id": "DemoApp"}.to_json
 					}
@@ -112,4 +117,3 @@
 		task :xcuitest do
 			system 'ruby app/xcuitest.rb'
 		end
-
