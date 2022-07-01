@@ -7,29 +7,32 @@ require 'rest-client'
 
 class AndroidAppTest < Test::Unit::TestCase
 
-# curl -u "<user>:<key>" 
-# 		 -X POST "https://api.browserstack.com/app-automate/upload" 
+# curl -u "<user>:<key>"
+# 		 -X POST "https://api.browserstack.com/app-automate/upload"
 # 		 -F "file=@/Path/to/File/WikipediaSample.apk"
 
   def setup
-    caps = {}
-		caps['device'] = 'Google Pixel'
-		caps['realMobile'] = true
-		caps['app'] = 'DemoApp'
 
-		caps['project'] = "BrowserStack"
-		caps['build'] = "Demo"
-		caps['name'] = "Wikipedia Search Function"
+    caps = {
+        "platformName" => "android",
+        "platformVersion" => "9.0",
+        "deviceName" => "Google Pixel 3",
+        "app" => "DemoApp",
+        'bstack:options' => {
+          "projectName" => "BrowserStack",
+          "buildName" => "Demo",
+          "sessionName" => "Wikipedia Search Function",
+          "debug" => true
+      },
+    }
 
-		caps['browserstack.debug'] = true
-    
 		appium_driver = Appium::Driver.new({
 			'caps' => caps,
 			'appium_lib' => {
 				:server_url => "http://#{ENV["BROWSERSTACK_USER"]}:#{ENV["BROWSERSTACK_ACCESSKEY"]}@hub-cloud.browserstack.com/wd/hub"
 			}}, true)
 		@driver = appium_driver.start_driver
-		
+
   end
 
   def test_post
@@ -55,5 +58,5 @@ class AndroidAppTest < Test::Unit::TestCase
   	RestClient.put api_url, {"status"=>"passed"}, {:content_type => :json}
     @driver.quit
   end
-  
+
 end
