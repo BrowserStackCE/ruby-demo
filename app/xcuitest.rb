@@ -38,8 +38,8 @@ key = ENV["BROWSERSTACK_ACCESSKEY"]
 			"app": app_url, 
 			"testSuite": test_url,
 			"devices": [
-				"iPhone 7 Plus-10.3",
-				"iPhone 8-11.0"
+				"iPhone 8-11",
+				"iPhone X-11"
 			], 
 			"deviceLogs": true 
 		}.to_json,
