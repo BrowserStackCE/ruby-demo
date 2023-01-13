@@ -38,7 +38,7 @@ key = ENV["BROWSERSTACK_ACCESSKEY"]
 			"app": app_url, 
 			"testSuite": test_url,
 			"devices": [
-				"Google Pixel-8.0", 
+				"Google Pixel 7-13.0",
 				"Google Pixel 3-10.0"
 			], 
 			"deviceLogs": true 
