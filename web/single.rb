@@ -7,22 +7,25 @@ require 'rest-client'
 class SingleTest < Test::Unit::TestCase
 
   def setup
-	  
-	url = "http://#{ENV["BROWSERSTACK_USER"]}:#{ENV["BROWSERSTACK_ACCESSKEY"]}@hub-cloud.browserstack.com/wd/hub"
 
-	caps = Selenium::WebDriver::Remote::Capabilities.new
-	caps['browser'] = 'Chrome'
-	caps['browser_version'] = '70.0'
-	caps['os'] = 'OS X'
-	caps['os_version'] = 'High Sierra'
-
-	caps['project'] = "BrowserStack"
-	caps['build'] = "Demo"
-	caps['name'] = "Single" 
-
-	caps["browserstack.debug"] = "true"
-    
-	@driver = Selenium::WebDriver.for(:remote, :url => url, :desired_capabilities => caps)
+  caps = Selenium::WebDriver::Remote::Capabilities.new(
+    'bstack:options': {
+      "os" => "Windows",
+      "osVersion" => "10",
+      "projectName" => "BrowserStack",
+      "buildName" => "Demo Example",
+      "sessionName" => "Single test case",
+      "local" => "false",
+      "debug"=> "true",
+      "seleniumCdp"=> true,
+      "seleniumVersion" => "4.1.2"
+    },
+    browser_name: 'chrome',
+    browserVersion: 'latest'
+  )
+  
+  url = "https://#{ENV["BROWSERSTACK_USER"]}:#{ENV["BROWSERSTACK_ACCESSKEY"]}@hub-cloud.browserstack.com/wd/hub"
+	@driver = Selenium::WebDriver.for(:remote, :url => url, :capabilities => caps)
 
   end
 
@@ -38,7 +41,7 @@ class SingleTest < Test::Unit::TestCase
 
 	title = @driver.title
 	assert_equal(title, title)
-    
+
   end
 
   def teardown
@@ -46,5 +49,5 @@ class SingleTest < Test::Unit::TestCase
   	RestClient.put api_url, {"status"=>"passed"}, {:content_type => :json}
    	@driver.quit
   end
-  
+
 end
